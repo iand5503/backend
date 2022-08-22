@@ -90,3 +90,97 @@ function app() {
 	getFortune();
 	fcBtn.addEventListener("click",nextState);
 }
+
+var countDownDate = new Date("May 5, 2019 12:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get todays date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now an the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+  + minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text 
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+
+jQuery(document).ready(function($){
+  
+	window.onload = function (){
+	  $(".bts-popup").delay(1000).addClass('is-visible');
+	  }
+	
+	  //open popup
+	  $('.bts-popup-trigger').on('click', function(event){
+		  event.preventDefault();
+		  $('.bts-popup').addClass('is-visible');
+	  });
+	  
+	  //close popup
+	  $('.bts-popup').on('click', function(event){
+		  if( $(event.target).is('.bts-popup-close') || $(event.target).is('.bts-popup') ) {
+			  event.preventDefault();
+			  $(this).removeClass('is-visible');
+		  }
+	  });
+	  //close popup when clicking the esc keyboard button
+	  $(document).keyup(function(event){
+		  if(event.which=='27'){
+			  $('.bts-popup').removeClass('is-visible');
+		  }
+	  });
+  });
+
+  const complimentBtn = document.getElementById("complimentButton")
+
+const getCompliment = () => {
+    axios.get("http://localhost:4000/api/compliment/")
+        .then(res => {
+            const data = res.data;
+            alert(data);
+    });
+};
+
+complimentBtn.addEventListener('click', getCompliment)
+
+addEventListener("load",app);
+function app() {
+	class Fortune {
+		constructor(fortuneList) {
+			this.text = !fortuneList ? "No fortune" : fortuneList[~~(Math.random() * fortuneList.length)];
+			this.luckyNumbers = [];
+			this.drawLuckyNumbers();
+		}
+		drawLuckyNumbers() {
+			let maxDraws = 6,
+				draws = maxDraws,
+				maxNumber = 99,
+				numberPool = [];
+
+			// create number pool
+			while (maxNumber--) {
+				numberPool.unshift(maxNumber + 1);
+			}
+			// draw from pool, populate the lucky numbers
+			while (draws--) {
+				let drawn = ~~(Math.random() * numberPool.length);
+				this.luckyNumbers.push(numberPool[drawn]);
+				numberPool.splice(drawn,1);
+			}
+		}
+	}
